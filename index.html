@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexO Employee Payment Contract</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .contract {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f9f9f9;
+            max-width: 600px;
+            margin: auto;
+        }
+        .signature-area {
+            margin-top: 20px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #000;
+            display: block;
+            margin: auto;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input[type="email"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contract">
+        <h1>LexO Employee Payment Contract</h1>
+        <p>
+            This contract confirms that LexO agrees to compensate employees in accordance with the agreed terms and conditions. Payment will be disbursed on a bi-weekly schedule. 
+            Employees are required to complete the following tasks as part of their employment duties:
+        </p>
+        <ul>
+            <li>Submit weekly reports.</li>
+            <li>Complete assigned projects on time.</li>
+            <li>Attend team meetings and provide updates.</li>
+        </ul>
+        <p>
+            The minimum hourly rate for employees will be $20/hour, with overtime paid at 1.5x the regular rate. Payment discrepancies must be reported within 5 business days.
+        </p>
+        <p>
+            By signing this document, you acknowledge your acceptance of these terms and agree to uphold your responsibilities as an employee of LexO.
+        </p>
+
+        <div class="signature-area">
+            <label for="signature">Draw Your Signature Below:</label>
+            <canvas id="signatureCanvas" width="400" height="150"></canvas>
+            <button onclick="clearSignature()">Clear</button>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Enter Your Email:</label>
+            <input type="email" id="email" placeholder="your.email@example.com" required>
+        </div>
+
+        <button onclick="submitContract()">Agree and Submit</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        canvas.addEventListener('mousedown', () => drawing = true);
+        canvas.addEventListener('mouseup', () => drawing = false);
+        canvas.addEventListener('mousemove', draw);
+
+        function draw(event) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'black';
+            ctx.beginPath();
+            ctx.moveTo(event.clientX - rect.left, event.clientY - rect.top);
+            ctx.lineTo(event.clientX - rect.left, event.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function submitContract() {
+            const email = document.getElementById('email').value;
+            if (!email) {
+                alert('Please enter your email before submitting.');
+                return;
+            }
+
+            const signatureData = canvas.toDataURL();
+            alert('Contract submitted successfully!');
+
+            // Example: Send the data to the server (commented out for demo purposes)
+            // fetch('/submit-contract', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ email, signature: signatureData })
+            // });
+        }
+    </script>
+</body>
+</html>
